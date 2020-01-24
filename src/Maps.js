@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Button } from 'antd';
 import {
   GoogleMap,
   LoadScript,
@@ -41,10 +42,25 @@ class Map extends Component {
     console.log('lng: ', marker.latLng.lng())
   }
 
+  /**
+   * This function captures the lat and lng when
+   * the user clicks on the map
+   */
   onClick (e) {
     console.log('clicked', e);
     console.log('lat: ', e.latLng.lat());
     console.log('lng: ', e.latLng.lng());
+
+    this.setState({
+      markerPosition: {
+        lat: e.latLng.lat(),
+        lng: e.latLng.lng()
+      },
+      mapPosition: {
+        lat: e.latLng.lat(),
+        lng: e.latLng.lng()
+      },
+    })
   }
 
   onPlaceChanged () {
@@ -71,6 +87,11 @@ class Map extends Component {
     }
   }
 
+  addLocation(x) {
+    console.log('location added');
+    console.log('lat: ', x);
+  }
+
   render () {
     return (
       <LoadScript
@@ -94,7 +115,7 @@ class Map extends Component {
             fullscreenControl: false,
             mapTypeControl: false
           }}
-          onClick={this.onClick}
+          onClick={ this.onClick = this.onClick.bind(this) }
         >
           <Marker
             onLoad={this.onLoad}
@@ -131,7 +152,16 @@ class Map extends Component {
               }}
             />
           </Autocomplete>
+
+
         </GoogleMap>
+        <Button
+          onClick={(e) => {
+            e.preventDefault();
+            this.addLocation(this.state.mapPosition);
+          }} >
+          Add Location
+        </Button>
       </LoadScript>
     )
   }
